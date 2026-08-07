@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Marcellus, Lato } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { site } from "@/content/site";
 import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import "./globals.css";
@@ -35,7 +36,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             then snaps to dark. Inline and synchronous for that reason. */}
         <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
       </head>
-      <body className="min-h-full flex flex-col font-body">{children}</body>
+      <body className="min-h-full flex flex-col font-body">
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
