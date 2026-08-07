@@ -1,0 +1,80 @@
+/**
+ * Design tokens — single source of truth for all brand styling.
+ *
+ * This file is the ONLY place raw hex values, font family names, or magic
+ * numbers may appear. Everything else in the app consumes these as Tailwind
+ * v4 utilities (bg-indigo-ink, text-paper-cream, font-display, etc.) via the
+ * @theme block below. This file will eventually be regenerated from the
+ * brand guide by another system, so its shape (this comment structure,
+ * these variable names) should stay stable even as values change.
+ */
+
+:root {
+  /* ---- Colors -------------------------------------------------------- */
+  --color-indigo-ink: #26355d; /* primary text / ink color */
+  --color-paper-cream: #f5f0e6; /* primary background, "paper" */
+  --color-seal-red: #ad1a2d; /* rare accent only — never background or body text */
+  --color-camphor-tan: #b3a585; /* secondary accent / muted surfaces */
+
+  /* ---- Fonts ----------------------------------------------------------
+   * Actual font loading happens via next/font/google in layout.tsx, which
+   * exposes the loaded fonts as these same CSS variable names. This file
+   * just declares the variable names as the contract components rely on.
+   */
+  --font-display: var(--font-marcellus), serif; /* Marcellus, display/caps */
+  --font-body: var(--font-lato), sans-serif; /* Lato, body copy */
+
+  /* ---- Tracking (letter-spacing) --------------------------------------
+   * Display type is set in wide-tracked caps per brand voice.
+   */
+  --tracking-display: 0.14em;
+  --tracking-display-wide: 0.22em;
+
+  /* ---- Spacing ----------------------------------------------------------
+   * Minimal custom scale — only the values the coming-soon page needs
+   * beyond Tailwind's default spacing scale.
+   */
+  --spacing-page-y: 8rem;
+
+  /* ---- Radius ----------------------------------------------------------
+   * No rounded surfaces in the current design; reserved for future use.
+   */
+  --radius-card: 0.25rem;
+
+  /* ---- Motion -----------------------------------------------------------
+   * The brief allows at most a subtle fade-in and nothing else. Keep this
+   * as the single sanctioned motion token rather than adding ad-hoc
+   * transitions in components.
+   */
+  --duration-fade-in: 700ms;
+  --ease-fade-in: ease-out;
+  --animate-fade-in: fade-in var(--duration-fade-in) var(--ease-fade-in) both;
+}
+
+@theme inline {
+  --color-indigo-ink: var(--color-indigo-ink);
+  --color-paper-cream: var(--color-paper-cream);
+  --color-seal-red: var(--color-seal-red);
+  --color-camphor-tan: var(--color-camphor-tan);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+
+  --tracking-display: var(--tracking-display);
+  --tracking-display-wide: var(--tracking-display-wide);
+
+  --spacing-page-y: var(--spacing-page-y);
+
+  --radius-card: var(--radius-card);
+
+  --animate-fade-in: var(--animate-fade-in);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
