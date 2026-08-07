@@ -73,12 +73,12 @@ export const privacy: LegalDoc = {
   description: "How Joho Brewing Co. handles information on this site.",
   lastUpdated: "August 6, 2026",
   intro:
-    "This is a small site and it is built to stay that way. We do not track you, and there is almost nothing here to collect.",
+    "This is a small site and it is built to stay that way. We set no cookies, we sell nothing about you, and we count visits without working out who you are.",
   sections: [
     {
       heading: "The short version",
       body: [
-        "We do not collect personal information through this site. There are no accounts, no forms, no newsletter signup, and no advertising or analytics cookies.",
+        "We do not ask you for personal information. There are no accounts, no forms, and no newsletter signup. We count page views with a tool that sets no cookies and does not follow you anywhere else.",
       ],
     },
     {
@@ -86,6 +86,14 @@ export const privacy: LegalDoc = {
       body: [
         "The site is served by Vercel, our hosting provider. Like any web host, Vercel records basic technical information about requests, such as an IP address, the browser used, and the page requested. This happens for every website you visit and it is used to keep the site running and secure.",
         "We do not combine that information with anything else, and we do not use it to build a profile of you.",
+      ],
+    },
+    {
+      heading: "How we count visits",
+      body: [
+        "We use Vercel Web Analytics to see which pages people read and roughly where they arrive from. It records the page, the site that linked you here, and general things like browser, device type, and country.",
+        "It sets no cookies and stores nothing on your device. To avoid counting the same visit twice it makes a short lived hash from your request instead, and that hash is thrown away within a day. We see totals and trends, never a person.",
+        "If you would rather not be counted, most browser tracking protections and content blockers stop it, and you are welcome here either way.",
       ],
     },
     {
