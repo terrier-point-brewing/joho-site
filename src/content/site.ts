@@ -171,6 +171,13 @@ export const terms: LegalDoc = {
       ],
     },
     {
+      heading: "Which law applies",
+      body: [
+        "These terms are governed by the laws of the State of North Carolina, without regard to its conflict of laws rules.",
+        "If a dispute about them ever needs a court, it belongs in the state or federal courts sitting in North Carolina, and we both agree to that.",
+      ],
+    },
+    {
       heading: "Changes",
       body: [
         "We will update these terms as the site grows, and the date at the top will change with them. Continuing to use the site after that means you accept the new version.",
