@@ -2,6 +2,6 @@
 @import "../styles/tokens.css";
 
 body {
-  background-color: var(--color-paper-cream);
-  color: var(--color-indigo-ink);
+  background-color: var(--color-ground);
+  color: var(--color-ink);
 }

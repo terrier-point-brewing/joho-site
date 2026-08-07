@@ -3,18 +3,46 @@
  *
  * This file is the ONLY place raw hex values, font family names, or magic
  * numbers may appear. Everything else in the app consumes these as Tailwind
- * v4 utilities (bg-indigo-ink, text-paper-cream, font-display, etc.) via the
- * @theme block below. This file will eventually be regenerated from the
- * brand guide by another system, so its shape (this comment structure,
- * these variable names) should stay stable even as values change.
+ * v4 utilities (bg-ground, text-ink, font-display, etc.) via the @theme
+ * block below. This file will eventually be regenerated from the brand
+ * guide by another system, so its shape (this comment structure, these
+ * variable names) should stay stable even as values change.
+ *
+ * Two layers, and the distinction matters:
+ *
+ *   1. PRIMITIVES are the palette as the brand guide names them. They say
+ *      what a color IS. Components never touch these.
+ *   2. ROLES say what a color DOES on a given ground. Components use only
+ *      these, which is what lets the whole site change theme by
+ *      re-pointing a handful of variables.
  */
 
 :root {
-  /* ---- Colors -------------------------------------------------------- */
-  --color-indigo-ink: #26355d; /* primary text / ink color */
-  --color-paper-cream: #f5f0e6; /* primary background, "paper" */
-  --color-seal-red: #ad1a2d; /* rare accent only — never background or body text */
-  --color-camphor-tan: #b3a585; /* secondary accent / muted surfaces */
+  /* ---- Primitives: core palette ----------------------------------------
+   * Indigo and paper are the foundation. The two accents are used
+   * sparingly enough that they still mean something — seal red is the mark
+   * of authorship (chop and accents only, at or under 5% of a
+   * composition), camphor is warmth and material. Neither is a background
+   * and neither is a theme. There is deliberately no third accent.
+   */
+  --color-indigo: #26355d; /* primary dark / text, dark grounds */
+  --color-paper: #f5f0e6; /* default ground */
+  --color-seal-red: #ad1a2d; /* chop + accents only, <=5% of composition */
+  --color-camphor: #b3a585; /* bridge neutral — card backgrounds, tags, wood */
+
+  /* ---- Primitives: derived light-mode neutrals ------------------------- */
+  --color-paper-2: #efe8da; /* surface */
+  --color-paper-3: #ded5c1; /* raised / line */
+  --color-content: #3a4256; /* body text */
+  --color-content-muted: #575a66; /* muted text */
+  --color-camphor-deep: #847552; /* emphasized dividers, control borders */
+
+  /* ---- Primitives: derived dark-mode neutrals -------------------------- */
+  --color-midnight: #131b2f; /* dark-mode canvas, label color on dark accents */
+  --color-indigo-2: #364672; /* dark-mode raised surfaces and hairlines */
+  --color-indigo-3: #4b5c8b; /* dark-mode emphasized dividers */
+  --color-chalk: #afb7ca; /* dark-mode muted body text */
+  --color-vermilion: #f37149; /* dark-mode accent — seal red is unreadable on indigo */
 
   /* ---- Fonts ----------------------------------------------------------
    * Actual font loading happens via next/font/google in layout.tsx, which
@@ -31,10 +59,11 @@
   --tracking-display-wide: 0.22em;
 
   /* ---- Spacing ----------------------------------------------------------
-   * Minimal custom scale — only the values the coming-soon page needs
-   * beyond Tailwind's default spacing scale.
+   * Minimal custom scale — only the values the pages need beyond
+   * Tailwind's default spacing scale.
    */
-  --spacing-page-y: 8rem;
+  --spacing-page-y: 8rem; /* full-height hero */
+  --spacing-page-y-sm: 4rem; /* reading pages, which start near the top */
 
   /* ---- Radius ----------------------------------------------------------
    * No rounded surfaces in the current design; reserved for future use.
@@ -49,13 +78,90 @@
   --duration-fade-in: 700ms;
   --ease-fade-in: ease-out;
   --animate-fade-in: fade-in var(--duration-fade-in) var(--ease-fade-in) both;
+
+  /* The one exception to "fade-in only". A switch that jumps between
+   * positions reads as broken rather than as restrained, so the knob gets
+   * a short travel. Deliberately quick enough to feel mechanical rather
+   * than animated. */
+  --duration-toggle: 200ms;
+  --ease-toggle: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+/* ---- Roles: light theme ------------------------------------------------
+ * The brand as written. Ink on paper.
+ */
+:root {
+  color-scheme: light;
+
+  --color-ground: var(--color-paper); /* the page itself */
+  --color-surface: var(--color-paper-2); /* panels sitting on the page */
+  --color-line: var(--color-paper-3); /* hairlines, quiet dividers */
+  --color-line-strong: var(--color-camphor-deep); /* emphasized dividers, control borders */
+
+  --color-display: var(--color-indigo); /* display type and the wordmark */
+  --color-ink: var(--color-content); /* body text */
+  --color-ink-muted: var(--color-content-muted); /* secondary text */
+
+  --color-accent: var(--color-seal-red); /* the chop. used once, on purpose */
+  --color-on-accent: var(--color-paper); /* label color sitting on the accent */
+}
+
+/* ---- Roles: dark theme -------------------------------------------------
+ * Not an inversion. The guide gives dark mode its own canvas and its own
+ * accent, because seal red is unreadable on indigo grounds.
+ *
+ * Applied by the [data-theme] attribute on <html>, which is set before
+ * first paint by the inline script in layout.tsx. Attribute-driven rather
+ * than media-query-driven so the toggle can override the system setting.
+ */
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-ground: var(--color-midnight);
+  --color-surface: var(--color-indigo);
+  --color-line: var(--color-indigo-2);
+  --color-line-strong: var(--color-indigo-3);
+
+  --color-display: var(--color-paper);
+  --color-ink: var(--color-paper);
+  --color-ink-muted: var(--color-chalk);
+
+  --color-accent: var(--color-vermilion);
+  --color-on-accent: var(--color-midnight);
+}
+
+/* Lets components write `dark:` utilities against the same attribute, for
+ * the few cases where a swapped variable is not enough (e.g. showing one
+ * of two labels in the theme toggle). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 @theme inline {
-  --color-indigo-ink: var(--color-indigo-ink);
-  --color-paper-cream: var(--color-paper-cream);
+  --color-indigo: var(--color-indigo);
+  --color-paper: var(--color-paper);
   --color-seal-red: var(--color-seal-red);
-  --color-camphor-tan: var(--color-camphor-tan);
+  --color-camphor: var(--color-camphor);
+
+  --color-paper-2: var(--color-paper-2);
+  --color-paper-3: var(--color-paper-3);
+  --color-content: var(--color-content);
+  --color-content-muted: var(--color-content-muted);
+  --color-camphor-deep: var(--color-camphor-deep);
+
+  --color-midnight: var(--color-midnight);
+  --color-indigo-2: var(--color-indigo-2);
+  --color-indigo-3: var(--color-indigo-3);
+  --color-chalk: var(--color-chalk);
+  --color-vermilion: var(--color-vermilion);
+
+  --color-ground: var(--color-ground);
+  --color-surface: var(--color-surface);
+  --color-line: var(--color-line);
+  --color-line-strong: var(--color-line-strong);
+  --color-display: var(--color-display);
+  --color-ink: var(--color-ink);
+  --color-ink-muted: var(--color-ink-muted);
+  --color-accent: var(--color-accent);
+  --color-on-accent: var(--color-on-accent);
 
   --font-display: var(--font-display);
   --font-body: var(--font-body);
@@ -64,10 +170,14 @@
   --tracking-display-wide: var(--tracking-display-wide);
 
   --spacing-page-y: var(--spacing-page-y);
+  --spacing-page-y-sm: var(--spacing-page-y-sm);
 
   --radius-card: var(--radius-card);
 
   --animate-fade-in: var(--animate-fade-in);
+
+  --duration-toggle: var(--duration-toggle);
+  --ease-toggle: var(--ease-toggle);
 }
 
 @keyframes fade-in {
